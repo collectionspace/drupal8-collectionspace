@@ -1,0 +1,8 @@
+name: Collection Space
+type: module
+description: 'Adds a CollectionSpace browser to your site.'
+package: Development
+core_version_requirement: ^8 || ^9
+core: 8.x
+dependencies:
+  - node

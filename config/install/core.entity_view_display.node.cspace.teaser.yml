@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+    config:
+        - core.entity_view_mode.node.teaser
+        - field.field.node.cspace.body
+        - node.type.cspace
+    module:
+        - text
+        - user
+id: node.cspace.teaser
+targetEntityType: node
+bundle: cspace
+mode: teaser
+content:
+    body:
+        label: hidden
+        type: text_summary_or_trimmed
+        weight: 101
+        settings:
+            trim_length: 600
+        third_party_settings: {  }
+    location:
+        weight: 101
+        label: above
+        settings: {  }
+        third_party_settings: {  }
+        type: text_default    
+hidden: {  }

@@ -1,0 +1,12 @@
+{#
+/**
+* @file
+* Default Theme Implementation
+*/
+#}
+<div id="cspace-browser"></div>
+<script src="{{content['#script_location']}}"></script>
+<script>
+	cspacePublicBrowser({{content['#config']|raw}}
+);
+</script>
