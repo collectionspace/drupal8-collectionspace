@@ -1,27 +1,52 @@
 <?php
 function cspace_theme($existing, $type, $theme, $path)
 {
-    return [
-        'node__cspace' => [
-            'base hook' => 'node'
-        ]
-    ];
+  return [
+    'node__cspace' => [
+      'base hook' => 'node'
+    ]
+  ];
 }
 function cspace_preprocess_node(&$variables)
 {
-    if ($variables['node']->getType() == "cspace") {
-        $contentArray = json_decode($variables['node']->get('body')->value);
-        if($contentArray){
-        $contentArray->basename = $_SERVER['REQUEST_URI'];
-        $variables['content'] = array(
-            '#config' => json_encode($contentArray, JSON_UNESCAPED_SLASHES),
-            '#script_location' => $variables['node']->get('location')->value
-        );
-        }
+  if ($variables['node']->getType() == "cspace") {
+    $contentArray = json_decode($variables['node']->get('body')->value);
+    if ($contentArray) {
+      $contentArray->basename = $_SERVER['REQUEST_URI'];
+      $variables['content'] = array(
+        '#config' => json_encode($contentArray, JSON_UNESCAPED_SLASHES),
+        '#script_location' => $variables['node']->get('location')->value
+      );
     }
+  }
 }
+function cspace_preprocess_page(&$variables)
+{
+  //getting full URI
+  $uriArray = explode("/", $_SERVER['REQUEST_URI']);
 
-function cspace_uninstall() {
+  //getting second last array element for grabbing node id drupal9/node/1/search
+  if (trim(end($uriArray)) == "search") {
+    array_pop($uriArray);
+    $uriArray = (string)implode("/", $uriArray);
+
+    header("Location: $uriArray");
+    die();
+  }
+  if (trim($uriArray[count($uriArray) - 2] == "detail")) {
+
+    setcookie("ReactRedirectionURL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]", time() + (86400 * 30), "/"); // 86400 = 1 day
+
+    array_pop($uriArray);
+    array_pop($uriArray);
+    $uriArray = (string)implode("/", $uriArray);
+
+    header("Location: $uriArray");
+    die();
+  }
+}
+function cspace_uninstall()
+{
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'cspace');
   $nids = $query->execute();
@@ -29,5 +54,5 @@ function cspace_uninstall() {
     \Drupal\node\Entity\Node::load($nid)->delete();
   }
   \Drupal\field\Entity\FieldStorageConfig::loadByName('node', 'location')->delete();
-  \Drupal\field\Entity\FieldConfig::loadByName('node', 'cspace','body')->delete();
+  \Drupal\field\Entity\FieldConfig::loadByName('node', 'cspace', 'body')->delete();
 }

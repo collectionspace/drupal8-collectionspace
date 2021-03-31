@@ -7,6 +7,26 @@
 <div id="cspace-browser"></div>
 <script src="{{content['#script_location']}}"></script>
 <script>
-	cspacePublicBrowser({{content['#config']|raw}}
-);
+
+cspacePublicBrowser({{content['#config']|raw}});
+
+function getCookie(name) {
+    var cookieArr = document.cookie.split(";");
+    for(var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+        if(name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    return null;
+}
+
+if(getCookie("ReactRedirectionURL")){
+	var ReactRedirectionURL=getCookie("ReactRedirectionURL");
+	document.cookie = "ReactRedirectionURL=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+	window.history.pushState("","",ReactRedirectionURL);
+	window.history.pushState("","",ReactRedirectionURL);
+	window.history.go(-1);
+}
+
 </script>
