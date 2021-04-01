@@ -27,22 +27,37 @@ function cspace_preprocess_page(&$variables)
 
   //getting second last array element for grabbing node id drupal9/node/1/search
   if (trim(end($uriArray)) == "search") {
-    array_pop($uriArray);
-    $uriArray = (string)implode("/", $uriArray);
 
-    header("Location: $uriArray");
-    die();
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'cspace');
+    $nids = $query->execute();
+
+    if (in_array($uriArray[count($uriArray) - 2], $nids)) {
+      array_pop($uriArray);
+      $uriArray = (string)implode("/", $uriArray);
+
+      header("Location: $uriArray");
+      die();
+    }
   }
+  
+
   if (trim($uriArray[count($uriArray) - 2] == "detail")) {
 
-    setcookie("ReactRedirectionURL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]", time() + (86400 * 30), "/"); // 86400 = 1 day
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'cspace');
+    $nids = $query->execute();
 
-    array_pop($uriArray);
-    array_pop($uriArray);
-    $uriArray = (string)implode("/", $uriArray);
+    if (in_array($uriArray[count($uriArray) - 3], $nids)) {
+      setcookie("ReactRedirectionURL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]", time() + (86400 * 30), "/"); // 86400 = 1 day
 
-    header("Location: $uriArray");
-    die();
+      array_pop($uriArray);
+      array_pop($uriArray);
+      $uriArray = (string)implode("/", $uriArray);
+
+      header("Location: $uriArray");
+      die();
+    }
   }
 }
 function cspace_uninstall()
@@ -56,3 +71,4 @@ function cspace_uninstall()
   \Drupal\field\Entity\FieldStorageConfig::loadByName('node', 'location')->delete();
   \Drupal\field\Entity\FieldConfig::loadByName('node', 'cspace', 'body')->delete();
 }
+
