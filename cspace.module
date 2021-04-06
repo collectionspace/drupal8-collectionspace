@@ -25,6 +25,15 @@ function cspace_preprocess_page(&$variables)
   //getting full URI
   $uriArray = explode("/", $_SERVER['REQUEST_URI']);
 
+  //adding redirection for filters
+  if ($_SERVER['QUERY_STRING']) {
+    setcookie("ReactRedirectionURL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]", time() + (86400 * 30), "/"); // 86400 = 1 day
+    $url_dir = $_SERVER['REQUEST_URI'];
+    $url_dir_no_get_param = explode("?", $url_dir)[0];
+    $url = "http://" . $_SERVER['HTTP_HOST'] . $url_dir_no_get_param;
+    header("Location: $url");
+    die();
+  }
   //getting second last array element for grabbing node id drupal9/node/1/search
   if (trim(end($uriArray)) == "search") {
 
@@ -40,7 +49,7 @@ function cspace_preprocess_page(&$variables)
       die();
     }
   }
-  
+
 
   if (trim($uriArray[count($uriArray) - 2] == "detail")) {
 
