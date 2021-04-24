@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+    config:
+        - field.field.node.cspace.location
+        - field.field.node.cspace.body
+        - node.type.cspace
+    module:
+        - text
+        - user
+id: node.cspace.default
+targetEntityType: node
+bundle: cspace
+mode: default
+content:
+    location:
+        weight: 101
+        label: above
+        settings: {  }
+        third_party_settings: {  }
+        type: text_textarea_with_summary
+    body:
+        label: hidden
+        type: text_textarea_with_summary
+        weight: 101
+        settings: {  }
+        third_party_settings: {  }
+hidden: {  }

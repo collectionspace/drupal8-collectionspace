@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - cspace
+name: 'CollectionSpace Browsers'
+type: cspace
+description: 'Create a CollectionSpace instance for a URL'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: true

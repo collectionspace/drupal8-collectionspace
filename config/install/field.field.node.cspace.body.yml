@@ -1,0 +1,20 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.cspace
+  module:
+    - text
+id: node.cspace.body
+field_name: body
+entity_type: node
+bundle: cspace
+label: 'Config'
+description: 'Add Config'
+required: true
+translatable: true
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: string_long

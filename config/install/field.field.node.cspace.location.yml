@@ -1,0 +1,22 @@
+# field.field.node.cspace.location.yml
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.location
+    - node.type.cspace
+  module:
+    - text
+id: node.cspace.location
+field_name: location
+entity_type: node
+bundle: cspace
+label: 'Script Location'
+description: 'Script Location'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: string_long
